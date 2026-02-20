@@ -58,24 +58,38 @@ CLASS_NAMES = {
     41: "End of no passing",
     42: "End no passing (trucks)"
 }
-
 @app.route("/predict", methods=["POST"])
 def predict():
     file = request.files["file"]
-    img = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
+
+    img = cv2.imdecode(
+        np.frombuffer(file.read(), np.uint8),
+        cv2.IMREAD_COLOR
+    )
     img = cv2.resize(img, (32, 32))
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
     prediction = model.predict(img)[0]
 
-    class_id = int(np.argmax(prediction))
-    confidence = float(np.max(prediction)) * 100
+    # Get sorted top 5 indices
+    top5_indices = prediction.argsort()[-5:][::-1]
+
+    top5 = []
+    for idx in top5_indices:
+        top5.append({
+            "class_id": int(idx),
+            "label": CLASS_NAMES[int(idx)],
+            "confidence": round(float(prediction[idx] * 100), 2)
+        })
+
+    best_idx = top5_indices[0]
 
     return jsonify({
-        "class_id": class_id,
-        "label": CLASS_NAMES[class_id],
-        "confidence": round(confidence, 2)
+        "class_id": int(best_idx),
+        "label": CLASS_NAMES[int(best_idx)],
+        "confidence": round(float(prediction[best_idx] * 100), 2),
+        "top5": top5
     })
 
 if __name__ == "__main__":
