@@ -13,6 +13,52 @@ model_path = os.path.join(BASE_DIR, "model", "traffic_sign_model.keras")
 
 model = load_model(model_path)
 
+CLASS_NAMES = {
+    0: "Speed limit (20km/h)",
+    1: "Speed limit (30km/h)",
+    2: "Speed limit (50km/h)",
+    3: "Speed limit (60km/h)",
+    4: "Speed limit (70km/h)",
+    5: "Speed limit (80km/h)",
+    6: "End of speed limit (80km/h)",
+    7: "Speed limit (100km/h)",
+    8: "Speed limit (120km/h)",
+    9: "No passing",
+    10: "No passing (trucks)",
+    11: "Right-of-way at intersection",
+    12: "Priority road",
+    13: "Yield",
+    14: "Stop",
+    15: "No vehicles",
+    16: "Vehicles over 3.5 tons prohibited",
+    17: "No entry",
+    18: "General caution",
+    19: "Dangerous curve left",
+    20: "Dangerous curve right",
+    21: "Double curve",
+    22: "Bumpy road",
+    23: "Slippery road",
+    24: "Road narrows",
+    25: "Road work",
+    26: "Traffic signals",
+    27: "Pedestrians",
+    28: "Children crossing",
+    29: "Bicycles crossing",
+    30: "Beware of ice/snow",
+    31: "Wild animals crossing",
+    32: "End speed + passing limits",
+    33: "Turn right ahead",
+    34: "Turn left ahead",
+    35: "Ahead only",
+    36: "Go straight or right",
+    37: "Go straight or left",
+    38: "Keep right",
+    39: "Keep left",
+    40: "Roundabout mandatory",
+    41: "End of no passing",
+    42: "End no passing (trucks)"
+}
+
 @app.route("/predict", methods=["POST"])
 def predict():
     file = request.files["file"]
@@ -21,10 +67,16 @@ def predict():
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
-    prediction = model.predict(img)
-    class_id = int(np.argmax(prediction))
+    prediction = model.predict(img)[0]
 
-    return jsonify({"prediction": class_id})
+    class_id = int(np.argmax(prediction))
+    confidence = float(np.max(prediction)) * 100
+
+    return jsonify({
+        "class_id": class_id,
+        "label": CLASS_NAMES[class_id],
+        "confidence": round(confidence, 2)
+    })
 
 if __name__ == "__main__":
     app.run(port=5001, debug=True)

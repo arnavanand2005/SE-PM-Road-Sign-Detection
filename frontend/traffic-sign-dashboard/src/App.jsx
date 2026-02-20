@@ -4,21 +4,16 @@ import axios from "axios";
 function App() {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [prediction, setPrediction] = useState("");
+  const [result, setResult] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-
-    if (selectedFile) {
-      setPreview(URL.createObjectURL(selectedFile));
-    }
+    setPreview(URL.createObjectURL(selectedFile));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!file) return;
 
     const formData = new FormData();
     formData.append("file", file);
@@ -28,7 +23,7 @@ function App() {
       formData
     );
 
-    setPrediction(res.data.prediction);
+    setResult(res.data);
   };
 
   return (
@@ -41,21 +36,32 @@ function App() {
         <button type="submit">Predict</button>
       </form>
 
-      {/* Image Preview */}
       {preview && (
         <div>
           <h4>Uploaded Image</h4>
-          <img
-            src={preview}
-            alt="preview"
-            width="150"
-            style={{ border: "1px solid #ccc" }}
-          />
+          <img src={preview} alt="preview" width="150" />
         </div>
       )}
 
-      {/* Prediction */}
-      {prediction && <h3>Prediction: {prediction}</h3>}
+      {result && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Sign: {result.label}</h3>
+          <h4>Confidence: {result.confidence}%</h4>
+
+          <div style={{
+            width: "300px",
+            height: "20px",
+            border: "1px solid black",
+            margin: "auto"
+          }}>
+            <div style={{
+              width: `${result.confidence}%`,
+              height: "100%",
+              backgroundColor: "green"
+            }} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
