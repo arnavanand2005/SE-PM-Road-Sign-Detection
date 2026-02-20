@@ -22,21 +22,52 @@ for class_id in range(43):
 data = np.array(data) / 255.0
 labels = to_categorical(labels, 43)
 
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+
 model = Sequential([
-    Conv2D(32, (3,3), activation='relu', input_shape=(32,32,3)),
+    Input(shape=(32, 32, 3)),
+
+    Conv2D(32, (3,3), activation='relu'),
     MaxPooling2D(),
+
     Conv2D(64, (3,3), activation='relu'),
     MaxPooling2D(),
+
     Flatten(),
     Dense(128, activation='relu'),
     Dropout(0.5),
+
     Dense(43, activation='softmax')
 ])
 
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(data, labels, epochs=10, batch_size=64, validation_split=0.2)
+from sklearn.model_selection import train_test_split
 
-model.save("model/traffic_sign_model.h5")
+X_train, X_val, y_train, y_val = train_test_split(
+    data, labels,
+    test_size=0.2,
+    random_state=42,
+    shuffle=True
+)
+
+
+from tensorflow.keras.callbacks import EarlyStopping
+
+early_stop = EarlyStopping(
+    monitor="val_loss",
+    patience=3,
+    restore_best_weights=True
+)
+
+model.fit(
+    X_train, y_train,
+    epochs=20,
+    batch_size=64,
+    validation_data=(X_val, y_val),
+    callbacks=[early_stop]
+)
+model.save("model/traffic_sign_model.keras")
 
 print("Model trained and saved successfully!")
