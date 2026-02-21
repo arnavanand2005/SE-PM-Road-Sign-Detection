@@ -101,16 +101,15 @@ export default function DatasetInfo() {
   return (
     <div className="dataset">
 
-      {/* ================== DATASET OVERVIEW ================== */}
       <h2>DATASET OVERVIEW</h2>
-      <div className="dataset-box">
+      <div className="dataset-box float">
         <p><b>Name:</b> German Traffic Sign Recognition Benchmark (GTSRB)</p>
         <p><b>Total Classes:</b> 43</p>
         <p><b>Task:</b> Multi-class Image Classification</p>
         <p><b>Application:</b> Autonomous Driving, ADAS, Smart Traffic Systems</p>
       </div>
 
-      <div className="dataset-link-box">
+      <div className="dataset-link-box float-slow">
         <p>📂 Official Dataset Source</p>
         <a
           href="https://benchmark.ini.rub.de/gtsrb_dataset.html"
@@ -121,7 +120,6 @@ export default function DatasetInfo() {
         </a>
       </div>
 
-      {/* ================== TEAM SECTION ================== */}
       <h2 className="team-heading">
         MEET THE TEAM <span className="wave">👋</span>
       </h2>
@@ -143,7 +141,7 @@ export default function DatasetInfo() {
           role: "Product Owner",
           link: "https://www.linkedin.com/in/himesh-sahoo-1234abcd/"
         }].map((m, i) => (
-          <div className="team-card" key={i}>
+          <div className={`team-card float-delay-${i}`} key={i}>
             <img src={m.img} alt={m.name} />
             <h3>{m.name}</h3>
             <p className="role">{m.role}</p>
@@ -154,7 +152,6 @@ export default function DatasetInfo() {
         ))}
       </div>
 
-      {/* ================== TRAFFIC SIGN CLASSES ================== */}
       <h2>TRAFFIC SIGN CLASSES</h2>
       <div className="signs-grid">
         {classNames.map((name, i) => (
@@ -165,12 +162,9 @@ export default function DatasetInfo() {
         ))}
       </div>
 
-      {/* ================== MODEL PERFORMANCE ================== */}
       <h2>MODEL PERFORMANCE & RESULTS</h2>
 
       <div className="results-grid">
-
-        {/* ROW 1 */}
         <div className="results-row two-col">
           <div className="result-card">
             <h3>Training vs Validation Accuracy</h3>
@@ -183,23 +177,17 @@ export default function DatasetInfo() {
           </div>
         </div>
 
-        {/* ROW 2 */}
         <div className="results-row one-col">
           <div className="result-card">
             <h3>Confusion Matrix</h3>
-            <img
-              src="/confusion_matrix.png"
-              alt="Confusion Matrix"
-              className="confusion-matrix"
-            />
+            <img src="/confusion_matrix.png" alt="Confusion Matrix" className="confusion-matrix" />
           </div>
         </div>
 
-        {/* ROW 3 */}
         <div className="results-row one-col">
           <div className="result-card metrics-card">
             <h3>Evaluation Metrics</h3>
-            <ul className="metrics-list">
+            <ul>
               <li>Accuracy: 95%</li>
               <li>Precision: 94%</li>
               <li>Recall: 93%</li>
@@ -209,7 +197,6 @@ export default function DatasetInfo() {
             </ul>
           </div>
         </div>
-
       </div>
     </div>
   );

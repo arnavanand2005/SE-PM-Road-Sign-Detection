@@ -140,13 +140,23 @@
 
 .conf-fill {
   height: 100%;
-  transition: width 0.7s ease;
+  width: 0;
+  animation: fillBar 1.2s ease-out forwards;
   background: linear-gradient(
     90deg,
     #dc2626 0%,
     #facc15 50%,
     #22c55e 100%
   );
+}
+
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--target-width);
+  }
 }
 
 /* ===== MUTED TEXT ===== */
@@ -167,5 +177,20 @@
 
   .right-panel .box:last-child {
     grid-column: span 1;
+  }
+}
+/* ===== RESULT ENTRY ANIMATION ===== */
+.result-animate {
+  animation: popIn 0.6s ease-out forwards;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }

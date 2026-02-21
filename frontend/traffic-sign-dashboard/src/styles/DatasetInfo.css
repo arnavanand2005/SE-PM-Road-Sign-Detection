@@ -285,3 +285,64 @@
     padding: 40px 20px;
   }
 }
+
+/* ================= FLOATING ANIMATIONS ================= */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+  100% { transform: translateY(0); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+/* Team staggered floating */
+.float-delay-0 { animation: float 6s ease-in-out infinite; }
+.float-delay-1 { animation: float 6s ease-in-out infinite 1s; }
+.float-delay-2 { animation: float 6s ease-in-out infinite 2s; }
+
+/* ================= WAVE ANIMATION ================= */
+.wave {
+  display: inline-block;
+  animation: waveHand 2.5s infinite;
+  transform-origin: 70% 70%;
+}
+
+@keyframes waveHand {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  45% { transform: rotate(14deg); }
+  60% { transform: rotate(-4deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ================= BASE STYLES ================= */
+.dataset {
+  padding: 70px 50px;
+  background: linear-gradient(180deg, #0f0f0f, #000);
+  color: white;
+}
+
+.dataset h2 {
+  text-align: center;
+  margin: 60px 0 30px;
+  font-size: 30px;
+  letter-spacing: 1.2px;
+  color: #facc15;
+}
+
+/* (REST OF YOUR CSS REMAINS UNCHANGED BELOW) */
+/* You can paste the remaining CSS exactly as you already have it */

@@ -55,21 +55,21 @@ export default function Dashboard() {
           {!result && <p className="muted">No prediction yet</p>}
 
           {result && (
-            <>
-              <div className="pred-label">{result.label}</div>
-              <div className="pred-conf">
-                Confidence: {result.confidence}%
-              </div>
-
-              <div className="conf-bar">
-                <div
-                  className="conf-fill"
-                  style={{ width: `${result.confidence}%` }}
-                />
-              </div>
-            </>
-          )}
+    <div className="result-animate">
+        <div className="pred-label">{result.label}</div>
+        <div className="pred-conf">
+        Confidence: {result.confidence}%
         </div>
+
+        <div className="conf-bar">
+        <div
+            className="conf-fill"
+            style={{ "--target-width": `${result.confidence}%` }}
+        />
+        </div>
+        </div>
+        )}
+    </div>
 
         <div className="box">
           <h3>Top 5 Predictions</h3>

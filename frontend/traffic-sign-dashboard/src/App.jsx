@@ -7,6 +7,7 @@ export default function App() {
   return (
     <>
       <Navbar />
+      <div className="road-divider"></div>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/dataset" element={<DatasetInfo />} />

@@ -23,7 +23,12 @@ export default function TopPredictions({ data }) {
           tick={{ fill: "#e5e7eb", fontSize: 12 }}
         />
         <Tooltip />
-        <Bar dataKey="confidence" fill="#facc15" />
+        <Bar
+          dataKey="confidence"
+          radius={[0, 6, 6, 0]}
+          fill="#facc15"
+          animationDuration={900}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
