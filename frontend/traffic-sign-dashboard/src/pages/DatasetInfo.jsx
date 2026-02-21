@@ -128,7 +128,7 @@ export default function DatasetInfo() {
         {[{
           img: arnav,
           name: "Arnav Anand",
-          role: "ML Engineer & Full Stack Developer",
+          role: "Developer",
           link: "https://www.linkedin.com/in/arnav-anand-056710315/"
         },{
           img: ansh,
