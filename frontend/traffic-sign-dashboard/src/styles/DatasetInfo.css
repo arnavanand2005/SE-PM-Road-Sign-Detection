@@ -1,27 +1,30 @@
-/* =========================================
-   DATASET SECTION
-========================================= */
+/* =========================================================
+   DATASET PAGE
+========================================================= */
 
 .dataset {
-  padding: 60px 40px;
+  padding: 70px 50px;
   background: linear-gradient(180deg, #0f0f0f, #000);
   color: white;
 }
 
+/* Section Headings */
 .dataset h2 {
   text-align: center;
-  margin-bottom: 25px;
-  font-size: 28px;
-  letter-spacing: 1px;
+  margin: 60px 0 30px;
+  font-size: 30px;
+  letter-spacing: 1.2px;
   color: #facc15;
 }
 
-/* Dataset Info Box */
+/* =========================================================
+   DATASET INFO
+========================================================= */
 
 .dataset-box {
-  max-width: 750px;
-  margin: 0 auto 60px auto;
-  padding: 28px;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  padding: 30px;
   background: #0c0c0c;
   border-radius: 18px;
   border: 1px solid #222;
@@ -31,35 +34,48 @@
 
 .dataset-box:hover {
   border-color: #22c55e;
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 20px rgba(34,197,94,0.3);
 }
 
-/* =========================================
+/* Dataset Link */
+.dataset-link-box {
+  max-width: 700px;
+  margin: 40px auto 80px auto;
+  padding: 26px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #111, #0a0a0a);
+  border: 2px solid #222;
+  text-align: center;
+  transition: 0.4s ease;
+  cursor: pointer;
+}
+
+.dataset-link-box:hover {
+  border-color: #22c55e;
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.35);
+  transform: scale(1.02);
+}
+
+.dataset-link-box p {
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.dataset-link-box a {
+  color: #22c55e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.dataset-link-box a:hover {
+  color: #facc15;
+}
+
+/* =========================================================
    TEAM SECTION
-========================================= */
+========================================================= */
 
-.team-heading {
-  margin-bottom: 40px;
-}
-
-/* 👋 Waving Animation */
-.wave {
-  display: inline-block;
-  animation: waveAnim 1.8s infinite;
-  transform-origin: 70% 70%;
-}
-
-@keyframes waveAnim {
-  0% { transform: rotate(0deg); }
-  15% { transform: rotate(15deg); }
-  30% { transform: rotate(-10deg); }
-  45% { transform: rotate(15deg); }
-  60% { transform: rotate(-5deg); }
-  75% { transform: rotate(10deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* Team Cards Layout */
 .team-container {
   display: flex;
   justify-content: center;
@@ -67,150 +83,205 @@
   flex-wrap: wrap;
 }
 
-/* Individual Team Card */
 .team-card {
-  background: linear-gradient(180deg, #111, #0a0a0a);
-  border-radius: 20px;
-  padding: 30px 25px;
-  width: 260px;
-  text-align: center;
-  border: 1px solid #222;
-  transition: 0.4s ease;
-  cursor: pointer;
+  background: linear-gradient(180deg, #121212, #0a0a0a);
+  border-radius: 24px;
+  padding: 36px 28px;
+  width: 300px;
+  border: 2px solid #222;
+  transition: all 0.4s ease;
+  position: relative;
 }
 
-/* Hover Effect */
 .team-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  border-color: #facc15;
-  box-shadow: 0 0 25px rgba(250, 204, 21, 0.35);
+  transform: translateY(-12px) scale(1.05);
+  border-color: #22c55e;
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.35);
 }
 
-/* Profile Image */
+/* Traffic light glow cycling */
+.team-card:nth-child(3n):hover {
+  border-color: #dc2626;
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.45);
+}
+
+.team-card:nth-child(3n+1):hover {
+  border-color: #facc15;
+  box-shadow: 0 0 30px rgba(250, 204, 21, 0.45);
+}
+
+.team-card:nth-child(3n+2):hover {
+  border-color: #22c55e;
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.45);
+}
+
 .team-card img {
-  width: 130px;
-  height: 130px;
-  object-fit: cover;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  border: 3px solid #22c55e;
+  object-fit: cover;
+  object-position: center;
+  border: 4px solid #22c55e;
   margin-bottom: 18px;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .team-card:hover img {
   border-color: #facc15;
-  box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+  transform: scale(1.05);
 }
 
-/* Name */
-.team-card h3 {
-  margin-bottom: 8px;
-  font-size: 18px;
-}
-
-/* Role */
 .role {
-  color: #9ca3af;
   font-size: 14px;
-  margin-bottom: 12px;
+  color: #9ca3af;
+}
+.linkedin-link {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 14px;
 }
 
-/* LinkedIn Icon */
 .linkedin-icon {
-  font-size: 26px;
+  font-size: 30px;
   color: #0a66c2;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
-.linkedin-icon:hover {
+.linkedin-link:hover .linkedin-icon {
   color: #22c55e;
-  transform: scale(1.2);
+  transform: scale(1.35) rotate(-6deg);
+  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.6));
 }
-
-/* =========================================
-   RESPONSIVE
-========================================= */
-
-@media (max-width: 768px) {
-  .team-container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* =========================================
-   TRAFFIC SIGN CARDS (SMALLER + DYNAMIC)
-========================================= */
+/* =========================================================
+   TRAFFIC SIGN CARDS
+========================================================= */
 
 .signs-grid {
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
 }
 
-/* Smaller Card */
+/* Responsive fallback */
+@media (max-width: 1200px) {
+  .signs-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .signs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .sign-card {
-  background: linear-gradient(180deg, #111, #0a0a0a);
-  border: 1px solid #222;
-  border-radius: 12px;
+  background: #111;
   padding: 14px;
-  min-height: 80px;
-  position: relative;
-  transition: all 0.35s ease;
-  cursor: pointer;
-  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #222;
+  transition: 0.35s;
 }
 
-/* Scale Effect */
 .sign-card:hover {
   transform: scale(1.15);
   z-index: 10;
 }
 
-/* Random Traffic Light Glow */
 .sign-card:nth-child(3n):hover {
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.7); /* Red */
-  border-color: #dc2626;
+  box-shadow: 0 0 22px rgba(220,38,38,0.7);
 }
 
 .sign-card:nth-child(3n+1):hover {
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.7); /* Green */
-  border-color: #22c55e;
+  box-shadow: 0 0 22px rgba(34,197,94,0.7);
 }
 
 .sign-card:nth-child(3n+2):hover {
-  box-shadow: 0 0 20px rgba(250, 204, 21, 0.8); /* Yellow */
-  border-color: #facc15;
+  box-shadow: 0 0 22px rgba(250,204,21,0.8);
 }
 
-/* Index Badge */
-.sign-index {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  font-size: 10px;
-  color: #6b7280;
-}
-
-/* Sign Name */
 .sign-name {
   font-size: 13px;
-  font-weight: 500;
-  color: #e5e7eb;
-  line-height: 1.3;
+}
+
+/* =========================================================
+   RESULTS SECTION
+========================================================= */
+/* ================= RESULTS GRID ================= */
+
+.results-grid {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+/* Row 1 → Curves */
+.results-row.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+/* Row 2 + 3 */
+.results-row.one-col {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Card styling */
+.result-card {
+  background: linear-gradient(180deg, #121212, #0c0c0c);
+  padding: 28px;
+  border-radius: 22px;
+  border: 2px solid #222;
+  transition: all 0.35s ease;
+}
+
+/* Hover glow effect */
+.result-card:hover {
+  transform: translateY(-6px);
+  border-color: #facc15;
+  box-shadow: 0 0 35px rgba(250, 204, 21, 0.35);
+}
+
+/* Confusion matrix full width */
+.confusion-matrix {
+  width: 100%;
+  border-radius: 16px;
+  margin-top: 16px;
+  transition: 0.3s ease;
+}
+
+.confusion-matrix:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+}
+
+.metrics-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.metrics-card li {
+  padding: 8px 0;
+  font-size: 15px;
+  border-bottom: 1px solid #1f2937;
   transition: 0.3s;
 }
 
-/* Text color changes with glow */
-.sign-card:nth-child(3n):hover .sign-name {
-  color: #dc2626;
-}
-
-.sign-card:nth-child(3n+1):hover .sign-name {
+.metrics-card li:hover {
   color: #22c55e;
+  padding-left: 8px;
 }
 
-.sign-card:nth-child(3n+2):hover .sign-name {
-  color: #facc15;
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+  .dataset {
+    padding: 40px 20px;
+  }
 }
