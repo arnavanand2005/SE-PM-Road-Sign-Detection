@@ -8,11 +8,17 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# -----------------------------
+# LOAD MODEL
+# -----------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "model", "traffic_sign_model.keras")
 
 model = load_model(model_path)
 
+# -----------------------------
+# CLASS LABELS
+# -----------------------------
 CLASS_NAMES = {
     0: "Speed limit (20km/h)",
     1: "Speed limit (30km/h)",
@@ -58,23 +64,60 @@ CLASS_NAMES = {
     41: "End of no passing",
     42: "End no passing (trucks)"
 }
+
+# -----------------------------
+# PREDICT ROUTE
+# -----------------------------
 @app.route("/predict", methods=["POST"])
 def predict():
-    file = request.files["file"]
+    file = request.files.get("file")
 
-    img = cv2.imdecode(
-        np.frombuffer(file.read(), np.uint8),
-        cv2.IMREAD_COLOR
-    )
+    if not file:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    # Read image
+    img_bytes = np.frombuffer(file.read(), np.uint8)
+    img = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
+
+    if img is None:
+        return jsonify({"error": "Invalid image"}), 400
+
+    # -----------------------------
+    # PREPROCESSING (CLEAN)
+    # -----------------------------
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (32, 32))
+    img = cv2.GaussianBlur(img, (3,3), 0)  # optional
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
+    # -----------------------------
+    # PREDICTION
+    # -----------------------------
     prediction = model.predict(img)[0]
 
-    # Get sorted top 5 indices
+    # Get top 5
     top5_indices = prediction.argsort()[-5:][::-1]
 
+    best_idx = int(top5_indices[0])
+    second_idx = int(top5_indices[1])
+
+    best_conf = float(prediction[best_idx])
+    second_conf = float(prediction[second_idx])
+
+    # -----------------------------
+    # 🔥 SPEED SIGN CORRECTION LOGIC
+    # -----------------------------
+    speed_classes = [0,1,2,3,4,5,7,8]
+
+    if best_idx in speed_classes and second_idx in speed_classes:
+        if abs(best_conf - second_conf) < 0.15:
+            best_idx = second_idx
+            best_conf = second_conf
+
+    print("Prediction:", CLASS_NAMES[best_idx], best_conf)
+
+    # Build top 5 response
     top5 = []
     for idx in top5_indices:
         top5.append({
@@ -83,14 +126,16 @@ def predict():
             "confidence": round(float(prediction[idx] * 100), 2)
         })
 
-    best_idx = top5_indices[0]
-
     return jsonify({
-        "class_id": int(best_idx),
-        "label": CLASS_NAMES[int(best_idx)],
-        "confidence": round(float(prediction[best_idx] * 100), 2),
+        "class_id": best_idx,
+        "label": CLASS_NAMES[best_idx],
+        "confidence": round(best_conf * 100, 2),
         "top5": top5
     })
 
+
+# -----------------------------
+# RUN SERVER
+# -----------------------------
 if __name__ == "__main__":
     app.run(port=5001, debug=True)
