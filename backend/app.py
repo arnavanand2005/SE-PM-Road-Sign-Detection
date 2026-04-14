@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from tensorflow.keras.models import load_model
 import numpy as np
@@ -7,6 +7,14 @@ import os
 
 app = Flask(__name__)
 CORS(app)
+
+# -----------------------------
+# SETUP STORAGE
+# -----------------------------
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+history = []  # in-memory storage
 
 # -----------------------------
 # LOAD MODEL
@@ -75,19 +83,24 @@ def predict():
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
 
+    # -----------------------------
+    # SAVE IMAGE
+    # -----------------------------
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
     # Read image
-    img_bytes = np.frombuffer(file.read(), np.uint8)
-    img = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
+    img = cv2.imread(file_path)
 
     if img is None:
         return jsonify({"error": "Invalid image"}), 400
 
     # -----------------------------
-    # PREPROCESSING (CLEAN)
+    # PREPROCESSING
     # -----------------------------
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (32, 32))
-    img = cv2.GaussianBlur(img, (3,3), 0)  # optional
+    img = cv2.GaussianBlur(img, (3,3), 0)
     img = img / 255.0
     img = np.expand_dims(img, axis=0)
 
@@ -96,7 +109,6 @@ def predict():
     # -----------------------------
     prediction = model.predict(img)[0]
 
-    # Get top 5
     top5_indices = prediction.argsort()[-5:][::-1]
 
     best_idx = int(top5_indices[0])
@@ -106,7 +118,7 @@ def predict():
     second_conf = float(prediction[second_idx])
 
     # -----------------------------
-    # 🔥 SPEED SIGN CORRECTION LOGIC
+    # SPEED SIGN FIX
     # -----------------------------
     speed_classes = [0,1,2,3,4,5,7,8]
 
@@ -117,7 +129,18 @@ def predict():
 
     print("Prediction:", CLASS_NAMES[best_idx], best_conf)
 
-    # Build top 5 response
+    # -----------------------------
+    # SAVE HISTORY
+    # -----------------------------
+    history.append({
+        "image": file.filename,
+        "label": CLASS_NAMES[best_idx],
+        "confidence": round(best_conf * 100, 2)
+    })
+
+    # -----------------------------
+    # TOP 5
+    # -----------------------------
     top5 = []
     for idx in top5_indices:
         top5.append({
@@ -132,6 +155,22 @@ def predict():
         "confidence": round(best_conf * 100, 2),
         "top5": top5
     })
+
+
+# -----------------------------
+# HISTORY ROUTE
+# -----------------------------
+@app.route("/history", methods=["GET"])
+def get_history():
+    return jsonify(history[::-1])
+
+
+# -----------------------------
+# SERVE IMAGES
+# -----------------------------
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 
 # -----------------------------
